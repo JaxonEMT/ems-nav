@@ -27,9 +27,9 @@
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
   }
-
+ 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
+ 
   body {
     background: var(--bg);
     color: var(--text);
@@ -38,7 +38,7 @@
     min-height: -webkit-fill-available;
     overflow-x: hidden;
   }
-
+ 
   /* HEADER */
   .header {
     background: var(--surface);
@@ -48,14 +48,14 @@
     top: 0;
     z-index: 100;
   }
-
+ 
   .header-top {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 14px;
   }
-
+ 
   .logo {
     width: 36px;
     height: 36px;
@@ -66,9 +66,9 @@
     justify-content: center;
     flex-shrink: 0;
   }
-
+ 
   .logo svg { width: 20px; height: 20px; }
-
+ 
   .header-title {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 800;
@@ -77,7 +77,7 @@
     color: var(--text);
     line-height: 1;
   }
-
+ 
   .header-sub {
     font-size: 11px;
     color: var(--text-dim);
@@ -86,7 +86,7 @@
     text-transform: uppercase;
     margin-top: 2px;
   }
-
+ 
   .sync-badge {
     margin-left: auto;
     font-size: 11px;
@@ -95,25 +95,25 @@
     align-items: center;
     gap: 5px;
   }
-
+ 
   .sync-dot {
     width: 7px;
     height: 7px;
     border-radius: 50%;
     background: #3fc97e;
   }
-
+ 
   .sync-dot.loading { background: var(--accent); animation: pulse 1s infinite; }
   .sync-dot.error { background: var(--accent2); }
-
+ 
   @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
-
+ 
   /* SEARCH */
   .search-wrap {
     position: relative;
     margin-bottom: 14px;
   }
-
+ 
   .search-icon {
     position: absolute;
     left: 14px;
@@ -122,7 +122,7 @@
     color: var(--text-muted);
     pointer-events: none;
   }
-
+ 
   .search-input {
     width: 100%;
     background: var(--surface2);
@@ -135,10 +135,10 @@
     outline: none;
     transition: border-color 0.2s;
   }
-
+ 
   .search-input:focus { border-color: var(--accent); }
   .search-input::placeholder { color: var(--text-muted); }
-
+ 
   .clear-btn {
     position: absolute;
     right: 12px;
@@ -156,16 +156,16 @@
     justify-content: center;
     font-size: 14px;
   }
-
+ 
   .clear-btn.visible { display: flex; }
-
+ 
   /* TABS */
   .tabs {
     display: flex;
     gap: 4px;
     padding-bottom: 0;
   }
-
+ 
   .tab {
     flex: 1;
     padding: 10px 8px;
@@ -185,11 +185,11 @@
     justify-content: center;
     gap: 7px;
   }
-
+ 
   .tab.active { color: var(--text); }
   .tab.stations.active { border-color: var(--station-color); color: var(--station-color); }
   .tab.posts.active { border-color: var(--post-color); color: var(--post-color); }
-
+ 
   .tab-count {
     background: var(--surface2);
     border-radius: 20px;
@@ -197,12 +197,12 @@
     font-size: 12px;
     font-weight: 600;
   }
-
+ 
   /* CONTENT */
   .content {
     padding: 16px 16px calc(var(--safe-bottom) + 24px);
   }
-
+ 
   /* LOCATION CARD */
   .location-card {
     background: var(--surface);
@@ -216,28 +216,28 @@
     display: block;
     -webkit-user-select: none;
   }
-
+ 
   .location-card:active { transform: scale(0.985); border-color: var(--accent); }
-
+ 
   .card-inner {
     padding: 14px 16px;
     display: flex;
     align-items: center;
     gap: 14px;
   }
-
+ 
   .card-type-bar {
     width: 4px;
     border-radius: 4px;
     align-self: stretch;
     flex-shrink: 0;
   }
-
+ 
   .station-bar { background: var(--station-color); }
   .post-bar { background: var(--post-color); }
-
+ 
   .card-body { flex: 1; min-width: 0; }
-
+ 
   .card-name {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 700;
@@ -249,7 +249,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
+ 
   .card-address {
     font-size: 13px;
     color: var(--text-dim);
@@ -258,7 +258,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
+ 
   .card-note {
     margin-top: 6px;
     background: var(--surface2);
@@ -269,21 +269,21 @@
     display: inline-block;
     font-weight: 500;
   }
-
+ 
   .card-arrow {
     color: var(--text-muted);
     flex-shrink: 0;
   }
-
+ 
   /* EMPTY STATE */
   .empty {
     text-align: center;
     padding: 60px 20px;
     color: var(--text-muted);
   }
-
+ 
   .empty-icon { font-size: 40px; margin-bottom: 12px; }
-
+ 
   .empty-title {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 20px;
@@ -291,15 +291,15 @@
     color: var(--text-dim);
     margin-bottom: 6px;
   }
-
+ 
   .empty-sub { font-size: 14px; }
-
+ 
   /* LOADING */
   .loading-state {
     text-align: center;
     padding: 60px 20px;
   }
-
+ 
   .spinner {
     width: 36px;
     height: 36px;
@@ -309,9 +309,9 @@
     animation: spin 0.7s linear infinite;
     margin: 0 auto 16px;
   }
-
+ 
   @keyframes spin { to { transform: rotate(360deg); } }
-
+ 
   .loading-text {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 16px;
@@ -319,7 +319,7 @@
     text-transform: uppercase;
     color: var(--text-dim);
   }
-
+ 
   /* ERROR STATE */
   .error-state {
     background: rgba(232, 56, 13, 0.08);
@@ -329,7 +329,7 @@
     margin: 16px 16px 0;
     text-align: center;
   }
-
+ 
   .error-title {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 18px;
@@ -337,9 +337,9 @@
     color: var(--accent2);
     margin-bottom: 6px;
   }
-
+ 
   .error-sub { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
-
+ 
   .retry-btn {
     margin-top: 12px;
     background: var(--accent2);
@@ -353,7 +353,7 @@
     letter-spacing: 0.5px;
     cursor: pointer;
   }
-
+ 
   /* SETUP BANNER */
   .setup-banner {
     background: rgba(59, 158, 255, 0.08);
@@ -362,7 +362,7 @@
     padding: 16px;
     margin: 0 0 16px;
   }
-
+ 
   .setup-title {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 700;
@@ -372,16 +372,16 @@
     text-transform: uppercase;
     margin-bottom: 6px;
   }
-
+ 
   .setup-text { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
   .setup-text code { background: var(--surface2); padding: 1px 5px; border-radius: 4px; font-size: 12px; color: var(--text); }
-
+ 
   /* HIGHLIGHT MATCH */
   mark { background: rgba(245, 166, 35, 0.25); color: var(--accent); border-radius: 2px; }
 </style>
 </head>
 <body>
-
+ 
 <div class="header">
   <div class="header-top">
     <div class="logo">
@@ -399,7 +399,7 @@
       <span id="syncText">Syncing…</span>
     </div>
   </div>
-
+ 
   <div class="search-wrap">
     <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
@@ -407,7 +407,7 @@
     <input class="search-input" type="search" id="searchInput" placeholder="Search stations or posts…" autocomplete="off" autocorrect="off" spellcheck="false">
     <button class="clear-btn" id="clearBtn" aria-label="Clear search">✕</button>
   </div>
-
+ 
   <div class="tabs">
     <button class="tab stations active" id="tabStations" onclick="switchTab('stations')">
       🏥 Stations
@@ -419,14 +419,14 @@
     </button>
   </div>
 </div>
-
+ 
 <div id="appContent">
   <div class="loading-state">
     <div class="spinner"></div>
     <div class="loading-text">Loading locations…</div>
   </div>
 </div>
-
+ 
 <script>
 // ============================================================
 // CONFIGURATION — Replace with your Google Sheet details
@@ -434,34 +434,34 @@
 const CONFIG = {
   // Paste your Google Sheet ID here (the long string in the URL)
   SHEET_ID: "10bKBOxytgH6lMRKwn34sha1mXhky1liyu5DSsXZvc5Q",
-
+ 
   // These must exactly match your sheet tab names
   STATIONS_SHEET: "Stations",
   POSTS_SHEET: "Posts",
-
+ 
   // Column names in your sheet (row 1 headers)
   COL_NAME: "Name",
   COL_ADDRESS: "Address",
   COL_NOTES: "Notes",   // Only used in Posts sheet
-
+ 
   // How often to refresh data (milliseconds). 0 = only on load.
   REFRESH_INTERVAL: 0,
 };
 // ============================================================
-
+ 
 let allStations = [];
 let allPosts = [];
 let activeTab = "stations";
-
+ 
 // ---- Google Sheets CSV fetch ----
 async function fetchSheet(sheetName) {
-  const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/export?format=csv&sheet=${encodeURIComponent(sheetName)}&t=${Date.now()}`;
+  const url = `https://opensheet.elk.sh/${CONFIG.SHEET_ID}/${encodeURIComponent(sheetName)}`;
   const resp = await fetch(url);
   if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-  const text = await resp.text();
-  return parseCSV(text);
+  const json = await resp.json();
+  return json;
 }
-
+ 
 function parseCSV(text) {
   const lines = text.trim().split("\n");
   if (lines.length < 2) return [];
@@ -473,7 +473,7 @@ function parseCSV(text) {
     return obj;
   }).filter(row => row[CONFIG.COL_NAME]);
 }
-
+ 
 function parseCSVRow(line) {
   const result = [];
   let inQuote = false, cur = "";
@@ -491,28 +491,28 @@ function parseCSVRow(line) {
   result.push(cur);
   return result;
 }
-
+ 
 // ---- Load data ----
 async function loadData() {
   if (CONFIG.SHEET_ID === "YOUR_SHEET_ID_HERE") {
     showSetupPrompt();
     return;
   }
-
+ 
   setSyncState("loading");
-
+ 
   try {
     const [stations, posts] = await Promise.all([
       fetchSheet(CONFIG.STATIONS_SHEET),
       fetchSheet(CONFIG.POSTS_SHEET),
     ]);
-
+ 
     allStations = stations;
     allPosts = posts;
-
+ 
     document.getElementById("stationCount").textContent = stations.length;
     document.getElementById("postCount").textContent = posts.length;
-
+ 
     setSyncState("ok");
     render();
   } catch (err) {
@@ -521,14 +521,14 @@ async function loadData() {
     showError(err.message);
   }
 }
-
+ 
 function setSyncState(state) {
   const dot = document.getElementById("syncDot");
   const text = document.getElementById("syncText");
   dot.className = "sync-dot " + (state === "loading" ? "loading" : state === "error" ? "error" : "");
   text.textContent = state === "loading" ? "Syncing…" : state === "error" ? "Sync failed" : "Live";
 }
-
+ 
 // ---- Tab switching ----
 function switchTab(tab) {
   activeTab = tab;
@@ -538,26 +538,26 @@ function switchTab(tab) {
   document.getElementById("clearBtn").classList.remove("visible");
   render();
 }
-
+ 
 // ---- Search ----
 document.getElementById("searchInput").addEventListener("input", function() {
   document.getElementById("clearBtn").classList.toggle("visible", this.value.length > 0);
   render();
 });
-
+ 
 document.getElementById("clearBtn").addEventListener("click", function() {
   document.getElementById("searchInput").value = "";
   this.classList.remove("visible");
   document.getElementById("searchInput").focus();
   render();
 });
-
+ 
 // ---- Render ----
 function render() {
   const query = document.getElementById("searchInput").value.trim().toLowerCase();
   const data = activeTab === "stations" ? allStations : allPosts;
   const isPost = activeTab === "posts";
-
+ 
   const filtered = query
     ? data.filter(loc =>
         (loc[CONFIG.COL_NAME] || "").toLowerCase().includes(query) ||
@@ -565,9 +565,9 @@ function render() {
         (isPost && (loc[CONFIG.COL_NOTES] || "").toLowerCase().includes(query))
       )
     : data;
-
+ 
   const content = document.getElementById("appContent");
-
+ 
   if (filtered.length === 0) {
     content.innerHTML = `
       <div class="content">
@@ -579,13 +579,13 @@ function render() {
       </div>`;
     return;
   }
-
+ 
   const cards = filtered.map(loc => {
     const name = highlight(loc[CONFIG.COL_NAME] || "", query);
     const address = highlight(loc[CONFIG.COL_ADDRESS] || "", query);
     const notes = isPost ? (loc[CONFIG.COL_NOTES] || "") : "";
     const mapsUrl = `maps://?daddr=${encodeURIComponent(loc[CONFIG.COL_ADDRESS] || "")}&dirflg=d`;
-
+ 
     return `
       <a class="location-card" href="${mapsUrl}">
         <div class="card-inner">
@@ -601,21 +601,21 @@ function render() {
         </div>
       </a>`;
   }).join("");
-
+ 
   content.innerHTML = `<div class="content">${cards}</div>`;
 }
-
+ 
 function highlight(text, query) {
   if (!query || !text) return escHtml(text);
   const escaped = escHtml(text);
   const escapedQuery = escHtml(query).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   return escaped.replace(new RegExp(`(${escapedQuery})`, "gi"), "<mark>$1</mark>");
 }
-
+ 
 function escHtml(str) {
   return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
-
+ 
 // ---- Error / Setup states ----
 function showError(msg) {
   document.getElementById("appContent").innerHTML = `
@@ -625,7 +625,7 @@ function showError(msg) {
       <button class="retry-btn" onclick="loadData()">Try Again</button>
     </div>`;
 }
-
+ 
 function showSetupPrompt() {
   setSyncState("error");
   document.getElementById("appContent").innerHTML = `
@@ -640,14 +640,15 @@ function showSetupPrompt() {
       </div>
     </div>`;
 }
-
+ 
 // ---- Init ----
 loadData();
-
+ 
 if (CONFIG.REFRESH_INTERVAL > 0) {
   setInterval(loadData, CONFIG.REFRESH_INTERVAL);
 }
 </script>
-
+ 
 </body>
 </html>
+ 
