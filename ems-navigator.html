@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="EMS Nav">
+<meta name="theme-color" content="#0a0a0a">
+<title>EMS Navigator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --surface2: #1e1e1e;
+    --border: #2a2a2a;
+    --accent: #f5a623;
+    --accent2: #e8380d;
+    --text: #f0f0f0;
+    --text-dim: #888;
+    --text-muted: #555;
+    --station-color: #3b9eff;
+    --post-color: #f5a623;
+    --radius: 12px;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: calc(var(--safe-top) + 16px) 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .logo {
+    width: 36px;
+    height: 36px;
+    background: var(--accent2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .logo svg { width: 20px; height: 20px; }
+
+  .header-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: 0.5px;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .header-sub {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .sync-badge {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .sync-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #3fc97e;
+  }
+
+  .sync-dot.loading { background: var(--accent); animation: pulse 1s infinite; }
+  .sync-dot.error { background: var(--accent2); }
+
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+  /* SEARCH */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 14px;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  .search-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 13px 14px 13px 42px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-muted); }
+
+  .clear-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--border);
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    color: var(--text-dim);
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .clear-btn.visible { display: flex; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    padding-bottom: 0;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px 8px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+  }
+
+  .tab.active { color: var(--text); }
+  .tab.stations.active { border-color: var(--station-color); color: var(--station-color); }
+  .tab.posts.active { border-color: var(--post-color); color: var(--post-color); }
+
+  .tab-count {
+    background: var(--surface2);
+    border-radius: 20px;
+    padding: 1px 7px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* CONTENT */
+  .content {
+    padding: 16px 16px calc(var(--safe-bottom) + 24px);
+  }
+
+  /* LOCATION CARD */
+  .location-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: transform 0.1s, border-color 0.15s;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    -webkit-user-select: none;
+  }
+
+  .location-card:active { transform: scale(0.985); border-color: var(--accent); }
+
+  .card-inner {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .card-type-bar {
+    width: 4px;
+    border-radius: 4px;
+    align-self: stretch;
+    flex-shrink: 0;
+  }
+
+  .station-bar { background: var(--station-color); }
+  .post-bar { background: var(--post-color); }
+
+  .card-body { flex: 1; min-width: 0; }
+
+  .card-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.3px;
+    color: var(--text);
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-address {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-note {
+    margin-top: 6px;
+    background: var(--surface2);
+    border-radius: 6px;
+    padding: 5px 9px;
+    font-size: 12px;
+    color: var(--post-color);
+    display: inline-block;
+    font-weight: 500;
+  }
+
+  .card-arrow {
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+  }
+
+  .empty-icon { font-size: 40px; margin-bottom: 12px; }
+
+  .empty-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  .empty-sub { font-size: 14px; }
+
+  /* LOADING */
+  .loading-state {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto 16px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* ERROR STATE */
+  .error-state {
+    background: rgba(232, 56, 13, 0.08);
+    border: 1px solid rgba(232, 56, 13, 0.3);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin: 16px 16px 0;
+    text-align: center;
+  }
+
+  .error-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent2);
+    margin-bottom: 6px;
+  }
+
+  .error-sub { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+
+  .retry-btn {
+    margin-top: 12px;
+    background: var(--accent2);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+  }
+
+  /* SETUP BANNER */
+  .setup-banner {
+    background: rgba(59, 158, 255, 0.08);
+    border: 1px solid rgba(59, 158, 255, 0.25);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin: 0 0 16px;
+  }
+
+  .setup-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--station-color);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .setup-text { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+  .setup-text code { background: var(--surface2); padding: 1px 5px; border-radius: 4px; font-size: 12px; color: var(--text); }
+
+  /* HIGHLIGHT MATCH */
+  mark { background: rgba(245, 166, 35, 0.25); color: var(--accent); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+        <circle cx="12" cy="9" r="2.5"/>
+      </svg>
+    </div>
+    <div>
+      <div class="header-title">EMS NAVIGATOR</div>
+      <div class="header-sub">Acadian Ambulance</div>
+    </div>
+    <div class="sync-badge">
+      <div class="sync-dot loading" id="syncDot"></div>
+      <span id="syncText">Syncing…</span>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input class="search-input" type="search" id="searchInput" placeholder="Search stations or posts…" autocomplete="off" autocorrect="off" spellcheck="false">
+    <button class="clear-btn" id="clearBtn" aria-label="Clear search">✕</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab stations active" id="tabStations" onclick="switchTab('stations')">
+      🏥 Stations
+      <span class="tab-count" id="stationCount">–</span>
+    </button>
+    <button class="tab posts" id="tabPosts" onclick="switchTab('posts')">
+      📍 Posts
+      <span class="tab-count" id="postCount">–</span>
+    </button>
+  </div>
+</div>
+
+<div id="appContent">
+  <div class="loading-state">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading locations…</div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIGURATION — Replace with your Google Sheet details
+// ============================================================
+const CONFIG = {
+  // Paste your Google Sheet ID here (the long string in the URL)
+  SHEET_ID: "10bKBOxytgH6lMRKwn34sha1mXhky1liyu5DSsXZvc5Q",
+
+  // These must exactly match your sheet tab names
+  STATIONS_SHEET: "Stations",
+  POSTS_SHEET: "Posts",
+
+  // Column names in your sheet (row 1 headers)
+  COL_NAME: "Name",
+  COL_ADDRESS: "Address",
+  COL_NOTES: "Notes",   // Only used in Posts sheet
+
+  // How often to refresh data (milliseconds). 0 = only on load.
+  REFRESH_INTERVAL: 0,
+};
+// ============================================================
+
+let allStations = [];
+let allPosts = [];
+let activeTab = "stations";
+
+// ---- Google Sheets CSV fetch ----
+async function fetchSheet(sheetName) {
+  const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/export?format=csv&sheet=${encodeURIComponent(sheetName)}&t=${Date.now()}`;
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  const text = await resp.text();
+  return parseCSV(text);
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split("\n");
+  if (lines.length < 2) return [];
+  const headers = parseCSVRow(lines[0]).map(h => h.trim());
+  return lines.slice(1).map(line => {
+    const vals = parseCSVRow(line);
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = (vals[i] || "").trim(); });
+    return obj;
+  }).filter(row => row[CONFIG.COL_NAME]);
+}
+
+function parseCSVRow(line) {
+  const result = [];
+  let inQuote = false, cur = "";
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQuote && line[i+1] === '"') { cur += '"'; i++; }
+      else inQuote = !inQuote;
+    } else if (ch === "," && !inQuote) {
+      result.push(cur); cur = "";
+    } else {
+      cur += ch;
+    }
+  }
+  result.push(cur);
+  return result;
+}
+
+// ---- Load data ----
+async function loadData() {
+  if (CONFIG.SHEET_ID === "YOUR_SHEET_ID_HERE") {
+    showSetupPrompt();
+    return;
+  }
+
+  setSyncState("loading");
+
+  try {
+    const [stations, posts] = await Promise.all([
+      fetchSheet(CONFIG.STATIONS_SHEET),
+      fetchSheet(CONFIG.POSTS_SHEET),
+    ]);
+
+    allStations = stations;
+    allPosts = posts;
+
+    document.getElementById("stationCount").textContent = stations.length;
+    document.getElementById("postCount").textContent = posts.length;
+
+    setSyncState("ok");
+    render();
+  } catch (err) {
+    console.error(err);
+    setSyncState("error");
+    showError(err.message);
+  }
+}
+
+function setSyncState(state) {
+  const dot = document.getElementById("syncDot");
+  const text = document.getElementById("syncText");
+  dot.className = "sync-dot " + (state === "loading" ? "loading" : state === "error" ? "error" : "");
+  text.textContent = state === "loading" ? "Syncing…" : state === "error" ? "Sync failed" : "Live";
+}
+
+// ---- Tab switching ----
+function switchTab(tab) {
+  activeTab = tab;
+  document.getElementById("tabStations").classList.toggle("active", tab === "stations");
+  document.getElementById("tabPosts").classList.toggle("active", tab === "posts");
+  document.getElementById("searchInput").value = "";
+  document.getElementById("clearBtn").classList.remove("visible");
+  render();
+}
+
+// ---- Search ----
+document.getElementById("searchInput").addEventListener("input", function() {
+  document.getElementById("clearBtn").classList.toggle("visible", this.value.length > 0);
+  render();
+});
+
+document.getElementById("clearBtn").addEventListener("click", function() {
+  document.getElementById("searchInput").value = "";
+  this.classList.remove("visible");
+  document.getElementById("searchInput").focus();
+  render();
+});
+
+// ---- Render ----
+function render() {
+  const query = document.getElementById("searchInput").value.trim().toLowerCase();
+  const data = activeTab === "stations" ? allStations : allPosts;
+  const isPost = activeTab === "posts";
+
+  const filtered = query
+    ? data.filter(loc =>
+        (loc[CONFIG.COL_NAME] || "").toLowerCase().includes(query) ||
+        (loc[CONFIG.COL_ADDRESS] || "").toLowerCase().includes(query) ||
+        (isPost && (loc[CONFIG.COL_NOTES] || "").toLowerCase().includes(query))
+      )
+    : data;
+
+  const content = document.getElementById("appContent");
+
+  if (filtered.length === 0) {
+    content.innerHTML = `
+      <div class="content">
+        <div class="empty">
+          <div class="empty-icon">${query ? "🔍" : (isPost ? "📍" : "🏥")}</div>
+          <div class="empty-title">${query ? "No results" : "No locations yet"}</div>
+          <div class="empty-sub">${query ? `Nothing matched "${query}"` : "Add locations to your Google Sheet"}</div>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const cards = filtered.map(loc => {
+    const name = highlight(loc[CONFIG.COL_NAME] || "", query);
+    const address = highlight(loc[CONFIG.COL_ADDRESS] || "", query);
+    const notes = isPost ? (loc[CONFIG.COL_NOTES] || "") : "";
+    const mapsUrl = `maps://?daddr=${encodeURIComponent(loc[CONFIG.COL_ADDRESS] || "")}&dirflg=d`;
+
+    return `
+      <a class="location-card" href="${mapsUrl}">
+        <div class="card-inner">
+          <div class="card-type-bar ${isPost ? "post-bar" : "station-bar"}"></div>
+          <div class="card-body">
+            <div class="card-name">${name}</div>
+            <div class="card-address">${address}</div>
+            ${notes ? `<div class="card-note">📌 ${highlight(notes, query)}</div>` : ""}
+          </div>
+          <svg class="card-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L12 22M19 9l-7-7-7 7"/>
+          </svg>
+        </div>
+      </a>`;
+  }).join("");
+
+  content.innerHTML = `<div class="content">${cards}</div>`;
+}
+
+function highlight(text, query) {
+  if (!query || !text) return escHtml(text);
+  const escaped = escHtml(text);
+  const escapedQuery = escHtml(query).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return escaped.replace(new RegExp(`(${escapedQuery})`, "gi"), "<mark>$1</mark>");
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+// ---- Error / Setup states ----
+function showError(msg) {
+  document.getElementById("appContent").innerHTML = `
+    <div class="error-state">
+      <div class="error-title">⚠️ Couldn't Load Data</div>
+      <div class="error-sub">Make sure your Google Sheet is published and the Sheet ID is correct.<br><br>Error: ${escHtml(msg)}</div>
+      <button class="retry-btn" onclick="loadData()">Try Again</button>
+    </div>`;
+}
+
+function showSetupPrompt() {
+  setSyncState("error");
+  document.getElementById("appContent").innerHTML = `
+    <div class="content">
+      <div class="setup-banner">
+        <div class="setup-title">⚙️ One-time setup needed</div>
+        <div class="setup-text">
+          Open this file in a text editor and replace <code>YOUR_SHEET_ID_HERE</code> with your Google Sheet ID.<br><br>
+          Your Sheet ID is the long string in the Google Sheets URL between <code>/d/</code> and <code>/edit</code>.<br><br>
+          Make sure your sheet is published: <strong>File → Share → Publish to web</strong>.
+        </div>
+      </div>
+    </div>`;
+}
+
+// ---- Init ----
+loadData();
+
+if (CONFIG.REFRESH_INTERVAL > 0) {
+  setInterval(loadData, CONFIG.REFRESH_INTERVAL);
+}
+</script>
+
+</body>
+</html>
