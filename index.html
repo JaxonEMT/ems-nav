@@ -432,19 +432,12 @@
 // CONFIGURATION — Replace with your Google Sheet details
 // ============================================================
 const CONFIG = {
-  // Paste your Google Sheet ID here (the long string in the URL)
-  SHEET_ID: "10bKBOxytgH6lMRKwn34sha1mXhky1liyu5DSsXZvc5Q",
- 
-  // These must exactly match your sheet tab names
+  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbzK-6LtAHWshkz-orBtC0hnILhqUXQl0FIIq1opljZWvAYU57pDecDsEkxpXSYCjbA6/exec",
   STATIONS_SHEET: "Stations",
   POSTS_SHEET: "Posts",
- 
-  // Column names in your sheet (row 1 headers)
   COL_NAME: "Name",
   COL_ADDRESS: "Address",
-  COL_NOTES: "Notes",   // Only used in Posts sheet
- 
-  // How often to refresh data (milliseconds). 0 = only on load.
+  COL_NOTES: "Notes",
   REFRESH_INTERVAL: 0,
 };
 // ============================================================
@@ -455,7 +448,7 @@ let activeTab = "stations";
  
 // ---- Google Sheets CSV fetch ----
 async function fetchSheet(sheetName) {
-  const url = `https://opensheet.elk.sh/${CONFIG.SHEET_ID}/${encodeURIComponent(sheetName)}`;
+  const url = `${CONFIG.SCRIPT_URL}?sheet=${encodeURIComponent(sheetName)}`;
   const resp = await fetch(url);
   if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
   const json = await resp.json();
@@ -494,7 +487,7 @@ function parseCSVRow(line) {
  
 // ---- Load data ----
 async function loadData() {
-  if (CONFIG.SHEET_ID === "YOUR_SHEET_ID_HERE") {
+  if (!CONFIG.SCRIPT_URL) {
     showSetupPrompt();
     return;
   }
@@ -651,4 +644,3 @@ if (CONFIG.REFRESH_INTERVAL > 0) {
  
 </body>
 </html>
- 
